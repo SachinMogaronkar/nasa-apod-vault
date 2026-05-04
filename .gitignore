@@ -1,24 +1,23 @@
-# ===== Java / Maven =====
+# ===== Backend build =====
 backend/target/
 *.class
-backend/src/main/resources/application.properties
 
-# ===== IntelliJ =====
+# ===== IDE =====
 .idea/
 *.iml
-
-# ===== Eclipse =====
-.metadata/
-.classpath
-.project
-.settings/
-
-# ===== VS Code =====
 .vscode/
 
 # ===== OS =====
 .DS_Store
 Thumbs.db
 
-# ===== Env / secrets =====
-.env
+# ===== ENV / SECRETS =====
+.env*
+backend/src/main/resources/application-local.properties
+
+# ===== OPTIONAL =====
+*.log
+
+# ===== DO NOT IGNORE THESE =====
+!backend/src/main/resources/application.properties
+!backend/src/main/resources/application-prod.properties
