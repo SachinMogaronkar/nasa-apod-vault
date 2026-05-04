@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+
+<body>
+<div class="homepage">
+
+  <video id="background-video" autoplay loop muted>
+    <source src="assets/videos/nasa1080.mp4" type="video/mp4" />
+  </video>
+
+  <div class="login-container">
+    <div id="login-form">
+
+      <h2 style="color:white;">Login</h2>
+
+      <input id="username" type="text" placeholder="Username" />
+      <input id="password" type="password" placeholder="Password" />
+
+      <button onclick="login()">Login</button>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+async function login() {
+
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const btn = document.querySelector("button");
+
+  if (!username || !password) {
+    alert("Enter username & password");
+    return;
+  }
+
+  btn.innerText = "Logging in...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (!res.ok) throw new Error();
+
+    const data = await res.json();
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("username", data.username);
+
+    window.location.href = "Homepage.html";
+
+  } catch {
+    alert("Invalid credentials");
+  }
+
+  btn.innerText = "Login";
+  btn.disabled = false;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NASA Dashboard</title>
+  <link rel="stylesheet" href="./homepage.css" />
+  <script src="./script.js" defer></script>
+</head>
+
+<body>
+<div class="homepage">
+
+  <!-- BACKGROUND -->
+  <video id="background-video" autoplay loop muted>
+    <source src="assets/videos/space.mp4" type="video/mp4" />
+  </video>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <p class="logo">NASA APOD</p>
+
+    <div class="button-container">
+      <button id="saveBtn" class="home-btn" onclick="saveToday()">Save</button>
+      <button class="home-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+
+    <div class="date-group">
+      <input type="date" id="apodDate" />
+      <button onclick="loadApodByDate()">Search</button>
+      <button onclick="prevDay()">◀</button>
+      <button onclick="nextDay()">▶</button>
+    </div>
+
+    <div class="view-group">
+      <button onclick="setActive(this); showToday()">Today</button>
+      <button onclick="setActive(this); showSaved()">Saved</button>
+    </div>
+
+  </div>
+
+  <!-- MAIN VIEW -->
+  <div class="carousel">
+
+    <div id="description" class="description">
+      <div class="welcome">
+        <h1>NASA APOD Explorer</h1>
+        <p>Explore the universe, one image at a time.</p>
+
+        <div class="welcome-actions">
+          <button onclick="showToday()">View Today</button>
+          <button onclick="showSaved()">View Saved</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img id="image" src="" />
+    </div>
+
+    <!-- NAV ARROWS -->
+    <div id="navArrows" class="nav-arrows">
+      <button onclick="prevSaved()">⬅</button>
+      <button onclick="nextSaved()">➡</button>
+    </div>
+
+  </div>
+
+  <!-- SAVED GRID -->
+  <div id="savedContainer" class="saved-grid"></div>
+
+  <!-- DELETE MODAL -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <p>Delete this APOD?</p>
+      <div class="modal-actions">
+        <button onclick="confirmDelete()">Yes</button>
+        <button onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

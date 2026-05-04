@@ -1,0 +1,403 @@
+/* ================= RESET ================= */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+/* ================= BACKGROUND ================= */
+#background-video {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.4) contrast(1.1);
+  z-index: -1;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #f4c430;
+  letter-spacing: 2px;
+}
+
+/* ================= BUTTONS ================= */
+.button-container {
+  display: flex;
+  gap: 15px;
+}
+
+.home-btn {
+  position: relative;
+  overflow: hidden;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.home-btn:hover {
+  background: #f4c430;
+  color: black;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(244,196,48,0.5);
+}
+
+/* Ripple */
+.home-btn::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.5s;
+}
+
+.home-btn:active::after {
+  width: 200px;
+  height: 200px;
+  opacity: 0;
+}
+
+/* ================= TOOLBAR ================= */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 60px;
+  margin-top: 10px;
+}
+
+.date-group,
+.view-group {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar input,
+.toolbar button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  background: #f4c430;
+  color: black;
+}
+
+.view-group button.active {
+  background: #f4c430;
+  color: black;
+}
+
+/* ================= WELCOME ================= */
+.welcome h1 {
+  font-size: 34px;
+  color: #f4c430;
+  margin-bottom: 10px;
+}
+
+.welcome p {
+  font-size: 15px;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.welcome-actions button {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.welcome-actions button:hover {
+  background: #f4c430;
+  color: black;
+}
+
+/* ================= MAIN CAROUSEL ================= */
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2%;
+  gap: 100px;
+  height: 85%;
+  position: relative;
+}
+
+/* ================= CARD ================= */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(25px);
+  border-radius: 16px;
+  padding: 10px;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+  animation: fadeIn 0.8s ease;
+}
+
+/* ================= IMAGE ================= */
+#image {
+  opacity: 0;
+}
+
+.card img {
+  width: 520px;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.5s ease;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+}
+
+/* ================= DESCRIPTION ================= */
+.description {
+  max-width: 520px;
+  padding: 25px;
+  font-size: 15px;
+  line-height: 1.7;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+
+  animation: slideIn 0.8s ease;
+}
+
+/* .place-name {
+  font-size: 30px;
+  color: #f4c430;
+  margin-bottom: 10px;
+  display: block;
+} */
+
+/* ===== NAV ARROWS CONTAINER ===== */
+.nav-arrows {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 90%;
+  display: none; /* controlled via JS */
+
+  justify-content: space-between;
+  pointer-events: none;
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* SHOW ON HOVER */
+.carousel:hover .nav-arrows {
+  opacity: 1;
+}
+
+/* ===== ARROW BUTTONS ===== */
+.nav-arrows button {
+  pointer-events: all;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+  border: 0.5px solid rgb(255, 255, 255);
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+
+  color: white;
+  font-size: 18px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.nav-arrows button:hover {
+  background: rgba(244,196,48,0.9);
+  color: black;
+
+  transform: scale(1.15);
+  box-shadow: 0 8px 20px rgba(255, 191, 0, 0.4);
+}
+
+/* CLICK FEEDBACK */
+.nav-arrows button:active {
+  transform: scale(0.95);
+}
+
+/* ================= SAVED GRID ================= */
+.saved-grid {
+  display: none;
+  padding: 40px;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.saved-card {
+  /* background: rgba(255,255,255,0.05); */
+  background: transparent;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.3s;
+  position: relative;
+}
+
+.saved-card.active {
+  border: 2px solid #f4c430;
+}
+
+.saved-card img {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.saved-card:hover {
+  transform: scale(1.05);
+}
+
+.saved-card p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* DELETE BUTTON */
+.saved-card button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,0,0,0.8);
+  border: none;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal button:first-child {
+  background: red;
+  color: white;
+}
+
+.modal button:last-child {
+  background: gray;
+  color: white;
+}
+
+/* ================= LOADING ================= */
+.loading {
+  width: 520px;
+  height: 360px;
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.05) 25%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
