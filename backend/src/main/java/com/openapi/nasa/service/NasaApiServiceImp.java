@@ -33,7 +33,7 @@ public class NasaApiServiceImp implements NasaApiService {
         this.userRepository = userRepository;
     }
 
-    // ================= GET CURRENT USER =================
+    //GET CURRENT USER
     private AppUser getCurrentUser() {
         String username = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
@@ -42,7 +42,7 @@ public class NasaApiServiceImp implements NasaApiService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    // ================= TODAY APOD =================
+    //TODAY APOD
     @Override
     public NasaApodResponse getApod() {
 
@@ -61,7 +61,7 @@ public class NasaApiServiceImp implements NasaApiService {
         return mapToDto(res);
     }
 
-    // ================= APOD BY DATE =================
+    //APOD BY DATE
     @Override
     public NasaApodResponse getApodByDate(String date) {
 
@@ -81,7 +81,7 @@ public class NasaApiServiceImp implements NasaApiService {
         return mapToDto(res);
     }
 
-    // ================= SAVE BY DATE =================
+    //SAVE BY DATE
     @Override
     public NasaApodResponse fetchAndSaveByDate(String date) {
 
@@ -111,7 +111,7 @@ public class NasaApiServiceImp implements NasaApiService {
         return mapEntityToDto(repository.save(entity));
     }
 
-    // ================= SAVE TODAY =================
+    //SAVE TODAY
     @Override
     public NasaApodResponse fetchAndSaveToday() {
 
@@ -140,7 +140,7 @@ public class NasaApiServiceImp implements NasaApiService {
         return mapEntityToDto(repository.save(entity));
     }
 
-    // ================= COMMON BUILDER =================
+    //COMMON BUILDER
     private NasaApod buildEntity(ApodResponse res, AppUser user, LocalDate date) {
         NasaApod entity = new NasaApod();
         entity.setDate(date);
@@ -152,7 +152,7 @@ public class NasaApiServiceImp implements NasaApiService {
         return entity;
     }
 
-    // ================= MAPPERS =================
+    //MAPPERS
 
     private NasaApodResponse mapToDto(ApodResponse res) {
         return new NasaApodResponse(

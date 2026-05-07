@@ -36,7 +36,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ================= LOGIN =================
+    //LOGIN
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
 
@@ -64,10 +64,9 @@ public class AuthController {
         }
     }
 
-    // ================= REGISTER =================
+    //REGISTER
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest request) {
-
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             return ResponseEntity.badRequest()
                     .body("User already exists");

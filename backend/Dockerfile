@@ -9,4 +9,4 @@ RUN ./mvnw clean package -DskipTests
 
 EXPOSE 5000
 
-CMD java -jar target/*.jar
+CMD ["java", "-jar", "target/nasa-0.0.1-SNAPSHOT.jar"]

@@ -1,9 +1,13 @@
 package com.openapi.nasa.config;
 
+import com.openapi.nasa.security.JwtFilter;
+import com.openapi.nasa.service.CustomUserDetailsService;
+
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,9 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.openapi.nasa.security.JwtFilter;
-import com.openapi.nasa.service.CustomUserDetailsService;
-
 @Configuration
 public class SecurityConfig {
 
@@ -25,60 +26,84 @@ public class SecurityConfig {
 
     public SecurityConfig(JwtFilter jwtFilter,
                           CustomUserDetailsService userDetailsService) {
+
         this.jwtFilter = jwtFilter;
         this.userDetailsService = userDetailsService;
     }
 
+    //PASSWORD ENCODER
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    //AUTH MANAGER
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
+
         return config.getAuthenticationManager();
     }
 
+    //AUTH PROVIDER
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
+
         return provider;
     }
 
+    //SECURITY FILTER CHAIN
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
 
         http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**")
-                )
 
+                // Disable CSRF for REST API
+                .csrf(csrf -> csrf.disable())
+
+                // Enable CORS
                 .cors(cors -> {})
 
-                .sessionManagement(sess ->
-                        sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // Stateless session
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
                 )
 
+                // Authentication provider
                 .authenticationProvider(authenticationProvider())
 
+                // Unauthorized response
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    "Unauthorized"
+                            );
                         })
                 )
 
+                // Route authorization
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/h2-console/**").permitAll()
+                        // Allow browser preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Public APIs
+                        // Public auth APIs
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // Public health endpoint
                         .requestMatchers("/api/nasa/health").permitAll()
 
-                        // Swagger
+                        // Swagger docs
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -86,18 +111,15 @@ public class SecurityConfig {
                                 "/swaggerdoc.html"
                         ).permitAll()
 
-                        // Protected
-                        .requestMatchers("/api/nasa/apod").hasRole("USER")
-
+                        // All other APIs protected
                         .anyRequest().authenticated()
                 )
 
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())
-                )
-
-                // JWT Filter
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                // JWT filter
+                .addFilterBefore(
+                        jwtFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
