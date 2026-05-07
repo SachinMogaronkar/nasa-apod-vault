@@ -1,12 +1,27 @@
-const BASE_URL = "http://localhost:5000/api/nasa";
+const API_BASE =
+    window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : "https://nasa-apod-vault.onrender.com";
+
+const BASE_URL = `${API_BASE}/api/nasa`;
 
 // ================= AUTH =================
 (function () {
-    const token = localStorage.getItem("token");
-    const isLogin = window.location.pathname.includes("Login.html");
 
-    if (!token && !isLogin) window.location.href = "Login.html";
-    if (token && isLogin) window.location.href = "Homepage.html";
+    const token = localStorage.getItem("token");
+    const path = window.location.pathname;
+    const isLogin =
+        path === "/" ||
+        path.includes("index.html");
+
+    if (!token && !isLogin) {
+        window.location.href = "/";
+    }
+
+    if (token && isLogin) {
+        window.location.href = "Homepage.html";
+    }
+
 })();
 
 // ================= STATE =================
@@ -84,7 +99,7 @@ async function loadApod() {
     setLoading();
 
     try {
-        const res = await fetch(`${BASE_URL}/apod`, {
+        const res = await fetch(`${API_BASE}/apod`, {
             headers: {
                 "Authorization": "Bearer " + getToken()
             }
@@ -109,7 +124,7 @@ async function loadApodByDate() {
     setLoading();
 
     try {
-        const res = await fetch(`${BASE_URL}/apod/date?date=${date}`, {
+        const res = await fetch(`${API_BASE}/apod/date?date=${date}`, {
             headers: {
                 "Authorization": "Bearer " + getToken()
             }
@@ -162,7 +177,7 @@ async function saveToday() {
     }
 
     try {
-        let url = `${BASE_URL}/apod/save/today`;
+        let url = `${API_BASE}/apod/save/today`;
 
         if (currentApod.date) {
             url += `?date=${currentApod.date}`;
@@ -196,7 +211,7 @@ async function showSaved() {
     container.innerHTML = "Loading...";
 
     try {
-        const res = await fetch(`${BASE_URL}/apod/saved`, {
+        const res = await fetch(`${API_BASE}/apod/saved`, {
             headers: {
                 "Authorization": "Bearer " + getToken()
             }
@@ -297,7 +312,7 @@ async function confirmDelete() {
     if (!deleteId) return;
 
     try {
-        const res = await fetch(`${BASE_URL}/apod/${deleteId}`, {
+        const res = await fetch(`${API_BASE}/apod/${deleteId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": "Bearer " + getToken()
@@ -325,5 +340,5 @@ function setActive(btn) {
 // ================= LOGOUT =================
 function logout() {
     localStorage.clear();
-    window.location.href = "Login.html";
+    window.location.href = "index.html";
 }
