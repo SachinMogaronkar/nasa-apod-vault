@@ -84,8 +84,9 @@ https://nasa-apod-vault.onrender.com/api/nasa/health
                           │
                           ▼
                 ┌─────────────────────┐
-                │  Frontend (CloudFlare) │
-                │ HTML / CSS / JS UI  │
+                │      Frontend       │
+                │    (CloudFlare)     │
+                │  HTML / CSS / JS UI │
                 └─────────┬───────────┘
                           │ REST API Calls
                           ▼
