@@ -208,20 +208,25 @@ backend/src/main/resources/application-local.properties
 ```
 
 Example:
-
 ```properties
-nasa.api.key=YOUR_API_KEY
+# NASA APOD API key
+# Generate from: https://api.nasa.gov/
+nasa.api.key=YOUR_NASA_API_KEY
 
-nasa.jwt.secret=YOUR_SECRET
+# JWT secret key used for token signing
+# Replace with a strong random secret string
+nasa.jwt.secret=YOUR_SECURE_JWT_SECRET
 
+# Local MySQL database configuration
+# Replace database name if different
 spring.datasource.url=jdbc:mysql://localhost:3306/nasa-directory
 
-spring.datasource.username=root
+# Local MySQL username
+spring.datasource.username=YOUR_DB_USERNAME
 
-spring.datasource.password=YOUR_PASSWORD
+# Local MySQL password
+spring.datasource.password=YOUR_DB_PASSWORD
 ```
-
----
 
 # 🐳 Docker Support
 
