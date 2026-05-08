@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NASA Dashboard</title>
+  <title>ShivaMai | NASA APOD Vault</title>
   <link rel="stylesheet" href="./homepage.css" />
   <script src="./script.js" defer></script>
+  <link rel="icon" type="image/png" href="assets/images/trident.png">
 </head>
 
 <body>
@@ -16,7 +17,10 @@
 
   <!-- NAVBAR -->
   <nav class="navbar">
-    <p class="logo">NASA APOD</p>
+    <div class="brand">
+        <img src="assets/images/trident.png" alt="ShivaMai" />
+        <h2>NASA APOD Vault</h2>
+    </div>
 
     <div class="button-container">
       <button id="saveBtn" class="home-btn" onclick="saveToday()">Save</button>
@@ -46,6 +50,9 @@
 
     <div id="description" class="description">
       <div class="welcome">
+        <img class="welcome-logo"
+         src="assets/images/logo.png"
+         alt="ShivaMai">
         <h1>NASA APOD Explorer</h1>
         <p>Explore the universe, one image at a time.</p>
 
