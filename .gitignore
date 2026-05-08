@@ -1,11 +1,14 @@
 # ===== Backend build =====
 backend/target/
 *.class
+backend/.env
 
 # ===== IDE =====
 .idea/
 *.iml
 .vscode/
+
+Documentation/
 
 # ===== OS =====
 .DS_Store
