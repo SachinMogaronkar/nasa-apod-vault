@@ -24,7 +24,7 @@ Users can:
 # 🌐 Live Demo
 
 ## Frontend
-https://nasa-apod-vault.netlify.app
+https://nasa-apod-vault.pages.dev/
 
 ## Backend Health Endpoint
 https://nasa-apod-vault.onrender.com/api/nasa/health
