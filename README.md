@@ -294,23 +294,35 @@ docker run -p 5000:5000 nasa-backend
 
 ---
 
-# 📸 Screenshots
+## 📸 Application Screenshots
 
-## Login Page
+### 🔐 Login Page
 
-<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/342ad22f-a383-4eb8-ab1b-6a1fcc1eab06" />
-
----
-
-## APOD View Page
-
-<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/d5eb8aa2-c3b7-4cac-afbb-66a769332261" />
+<img width="100%" src="./screenshots/login.png" />
 
 ---
 
-## Saved APOD Collection
+### 📝 Signup Page
 
-<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/23da4276-e92e-4349-9a22-58e6ea75c8d0" />
+<img width="100%" src="./screenshots/signup.png" />
+
+---
+
+### 🏠 Homepage Dashboard
+
+<img width="100%" src="./screenshots/homepage.png" />
+
+---
+
+### 🌌 APOD View Experience
+
+<img width="100%" src="./screenshots/apodviewpage.png" />
+
+---
+
+### 💾 Saved APOD Collection
+
+<img width="100%" src="./screenshots/savedapodcollection.png" />
 
 ---
 
