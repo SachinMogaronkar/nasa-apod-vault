@@ -24,3 +24,9 @@ backend/src/main/resources/application-local.properties
 # ===== DO NOT IGNORE THESE =====
 !backend/src/main/resources/application.properties
 !backend/src/main/resources/application-prod.properties
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
