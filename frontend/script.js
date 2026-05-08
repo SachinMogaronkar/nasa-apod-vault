@@ -3,13 +3,15 @@ const API_BASE =
         ? "http://localhost:5000"
         : "https://nasa-apod-vault.onrender.com";
 
-const BASE_URL = `${API_BASE}/api/nasa`;
+const NASA_API = `${API_BASE}/api/nasa`;
 
 // ================= AUTH =================
 (function () {
 
     const token = localStorage.getItem("token");
+
     const path = window.location.pathname;
+
     const isLogin =
         path === "/" ||
         path.includes("index.html");
@@ -35,6 +37,12 @@ function getToken() {
     return localStorage.getItem("token");
 }
 
+function authHeaders() {
+    return {
+        "Authorization": "Bearer " + getToken()
+    };
+}
+
 function showArrows() {
     document.getElementById("navArrows").style.display = "flex";
 }
@@ -44,7 +52,9 @@ function hideArrows() {
 }
 
 function setLoading() {
+
     const img = document.getElementById("image");
+
     img.style.opacity = 0;
     img.src = "";
 
@@ -53,6 +63,7 @@ function setLoading() {
 }
 
 function setError(msg) {
+
     document.getElementById("description").innerHTML =
         `<p style="color:red;">${msg}</p>`;
 }
@@ -71,6 +82,7 @@ function render(data, fromSaved = false) {
     const img = document.getElementById("image");
 
     document.querySelector(".carousel").style.display = "flex";
+
     document.getElementById("savedContainer").style.display = "none";
 
     img.style.opacity = 0;
@@ -78,8 +90,11 @@ function render(data, fromSaved = false) {
     const temp = new Image();
 
     temp.onload = () => {
+
         img.src = temp.src;
+
         img.style.transition = "opacity 0.4s ease";
+
         img.style.opacity = 1;
     };
 
@@ -99,18 +114,24 @@ async function loadApod() {
     setLoading();
 
     try {
-        const res = await fetch(`${API_BASE}/apod`, {
-            headers: {
-                "Authorization": "Bearer " + getToken()
-            }
+
+        const res = await fetch(`${NASA_API}/apod`, {
+            method: "GET",
+            headers: authHeaders()
         });
 
-        if (!res.ok) throw new Error();
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
 
         const data = await res.json();
+
         render(data);
 
-    } catch {
+    } catch (e) {
+
+        console.error("APOD LOAD ERROR:", e);
+
         setError("Failed to load APOD");
     }
 }
@@ -119,42 +140,59 @@ async function loadApod() {
 async function loadApodByDate() {
 
     const date = document.getElementById("apodDate").value;
+
     if (!date) return;
 
     setLoading();
 
     try {
-        const res = await fetch(`${API_BASE}/apod/date?date=${date}`, {
-            headers: {
-                "Authorization": "Bearer " + getToken()
-            }
-        });
 
-        if (!res.ok) throw new Error();
+        const res = await fetch(
+            `${NASA_API}/apod/date?date=${date}`,
+            {
+                method: "GET",
+                headers: authHeaders()
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
 
         const data = await res.json();
+
         render(data);
 
-    } catch {
+    } catch (e) {
+
+        console.error("DATE APOD ERROR:", e);
+
         setError("Failed to load APOD");
     }
 }
 
 // ================= DATE NAV =================
 function prevDay() {
+
     const input = document.getElementById("apodDate");
+
     if (!input.value) return;
 
     let date = new Date(input.value);
+
     date.setDate(date.getDate() - 1);
+
     updateDate(date);
 }
 
 function nextDay() {
+
     const input = document.getElementById("apodDate");
+
     if (!input.value) return;
 
     let date = new Date(input.value);
+
     date.setDate(date.getDate() + 1);
 
     if (date > new Date()) return;
@@ -163,8 +201,11 @@ function nextDay() {
 }
 
 function updateDate(date) {
+
     const d = date.toISOString().split("T")[0];
+
     document.getElementById("apodDate").value = d;
+
     loadApodByDate();
 }
 
@@ -172,12 +213,15 @@ function updateDate(date) {
 async function saveToday() {
 
     if (!currentApod) {
+
         alert("Nothing to save");
+
         return;
     }
 
     try {
-        let url = `${API_BASE}/apod/save/today`;
+
+        let url = `${NASA_API}/apod/save/today`;
 
         if (currentApod.date) {
             url += `?date=${currentApod.date}`;
@@ -185,17 +229,19 @@ async function saveToday() {
 
         const res = await fetch(url, {
             method: "POST",
-            headers: {
-                "Authorization": "Bearer " + getToken()
-            }
+            headers: authHeaders()
         });
 
-        if (!res.ok) throw new Error();
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
 
         alert("Saved successfully!");
 
     } catch (e) {
-        console.error(e);
+
+        console.error("SAVE ERROR:", e);
+
         alert("Save failed");
     }
 }
@@ -203,40 +249,58 @@ async function saveToday() {
 // ================= SAVED =================
 async function showSaved() {
 
-    const container = document.getElementById("savedContainer");
+    const container =
+        document.getElementById("savedContainer");
 
-    document.querySelector(".carousel").style.display = "none";
+    document.querySelector(".carousel").style.display =
+        "none";
+
     container.style.display = "grid";
 
     container.innerHTML = "Loading...";
 
     try {
-        const res = await fetch(`${API_BASE}/apod/saved`, {
-            headers: {
-                "Authorization": "Bearer " + getToken()
+
+        const res = await fetch(
+            `${NASA_API}/apod/saved`,
+            {
+                method: "GET",
+                headers: authHeaders()
             }
-        });
+        );
+
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
 
         const data = await res.json();
 
         if (!Array.isArray(data) || data.length === 0) {
-            container.innerHTML = "<p>No saved APODs</p>";
+
+            container.innerHTML =
+                "<p>No saved APODs</p>";
+
             return;
         }
 
         savedList = data;
+
         container.innerHTML = "";
 
         data.forEach((item, index) => {
 
             const card = document.createElement("div");
+
             card.className = "saved-card";
 
             const img = document.createElement("img");
+
             img.src = item.url;
 
             img.onclick = () => {
+
                 currentIndex = index;
+
                 renderSaved(item);
 
                 document.querySelectorAll(".saved-card")
@@ -246,11 +310,15 @@ async function showSaved() {
             };
 
             const title = document.createElement("p");
+
             title.innerText = item.title;
 
             const del = document.createElement("button");
+
             del.innerText = "🗑";
-            del.onclick = () => openDeleteModal(item.id);
+
+            del.onclick = () =>
+                openDeleteModal(item.id);
 
             card.appendChild(img);
             card.appendChild(del);
@@ -259,36 +327,53 @@ async function showSaved() {
             container.appendChild(card);
         });
 
-    } catch {
+    } catch (e) {
+
+        console.error("SAVED ERROR:", e);
+
         container.innerHTML = "Failed to load";
     }
 }
 
 // ================= VIEW SAVED =================
 function renderSaved(item) {
-    showArrows(); // 🔥 ONLY here
+
+    showArrows();
+
     render(item, true);
 }
 
 // ================= NAVIGATION =================
 function nextSaved() {
+
     if (currentIndex < savedList.length - 1) {
+
         currentIndex++;
+
         renderSaved(savedList[currentIndex]);
     }
 }
 
 function prevSaved() {
+
     if (currentIndex > 0) {
+
         currentIndex--;
+
         renderSaved(savedList[currentIndex]);
     }
 }
 
-// keyboard navigation
+// ================= KEYBOARD =================
 document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") nextSaved();
-    if (e.key === "ArrowLeft") prevSaved();
+
+    if (e.key === "ArrowRight") {
+        nextSaved();
+    }
+
+    if (e.key === "ArrowLeft") {
+        prevSaved();
+    }
 });
 
 // ================= SWITCH =================
@@ -298,13 +383,19 @@ function showToday() {
 
 // ================= DELETE =================
 function openDeleteModal(id) {
+
     deleteId = id;
-    document.getElementById("deleteModal").style.display = "flex";
+
+    document.getElementById("deleteModal").style.display =
+        "flex";
 }
 
 function closeModal() {
+
     deleteId = null;
-    document.getElementById("deleteModal").style.display = "none";
+
+    document.getElementById("deleteModal").style.display =
+        "none";
 }
 
 async function confirmDelete() {
@@ -312,25 +403,34 @@ async function confirmDelete() {
     if (!deleteId) return;
 
     try {
-        const res = await fetch(`${API_BASE}/apod/${deleteId}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": "Bearer " + getToken()
-            }
-        });
 
-        if (!res.ok) throw new Error();
+        const res = await fetch(
+            `${NASA_API}/apod/${deleteId}`,
+            {
+                method: "DELETE",
+                headers: authHeaders()
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
 
         closeModal();
+
         showSaved();
 
-    } catch {
+    } catch (e) {
+
+        console.error("DELETE ERROR:", e);
+
         alert("Delete failed");
     }
 }
 
 // ================= ACTIVE TAB =================
 function setActive(btn) {
+
     document.querySelectorAll(".view-group button")
         .forEach(b => b.classList.remove("active"));
 
@@ -339,6 +439,8 @@ function setActive(btn) {
 
 // ================= LOGOUT =================
 function logout() {
+
     localStorage.clear();
-    window.location.href = "index.html";
+
+    window.location.href = "/";
 }
