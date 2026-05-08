@@ -108,6 +108,40 @@ function render(data, fromSaved = false) {
     `;
 }
 
+// ================= HOME =================
+function goHome() {
+
+    document.querySelector(".carousel").style.display =
+        "flex";
+
+    document.getElementById("savedContainer").style.display =
+        "none";
+
+    document.getElementById("backContainer").style.display =
+        "none";
+
+    document.getElementById("description").innerHTML = `
+        <div class="welcome">
+            <img class="welcome-logo"
+                src="assets/images/logo.png"
+                alt="ShivaMai">
+
+            <h1>NASA APOD Explorer</h1>
+
+            <p>Explore the universe, one image at a time.</p>
+
+            <div class="welcome-actions">
+                <button onclick="showToday()">View Today</button>
+                <button onclick="showSaved()">View Saved</button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("image").src = "";
+
+    hideArrows();
+}
+
 // ================= TODAY =================
 async function loadApod() {
 
@@ -227,7 +261,7 @@ async function saveToday() {
             url =
                 `${NASA_API}/apod/save?date=${currentApod.date}`;
         }
-        
+
         else {
 
             url = `${NASA_API}/apod/save/today`;
@@ -262,6 +296,9 @@ async function showSaved() {
         "none";
 
     container.style.display = "grid";
+
+    document.getElementById("backContainer").style.display =
+    "flex";
 
     container.innerHTML = "Loading...";
 
@@ -384,9 +421,12 @@ document.addEventListener("keydown", (e) => {
 
 // ================= SWITCH =================
 function showToday() {
+
+    document.getElementById("backContainer").style.display =
+        "none";
+
     loadApod();
 }
-
 // ================= DELETE =================
 function openDeleteModal(id) {
 
