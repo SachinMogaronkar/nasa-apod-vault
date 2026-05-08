@@ -431,14 +431,10 @@ body {
 }
 
 .powered-by-home img {
-  width: 20px;
-  height: 20px;
-
-  object-fit: contain;
-
-  opacity: 0.85;
-
-  filter: drop-shadow(0 0 8px rgba(0,183,255,0.25));
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  filter: drop-shadow(0 0 8px rgba(0,183,255,0.35));
 }
 
 @keyframes shimmer {
