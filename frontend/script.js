@@ -221,10 +221,16 @@ async function saveToday() {
 
     try {
 
-        let url = `${NASA_API}/apod/save/today`;
-
+        let url;
         if (currentApod.date) {
-            url += `?date=${currentApod.date}`;
+
+            url =
+                `${NASA_API}/apod/save?date=${currentApod.date}`;
+        }
+        
+        else {
+
+            url = `${NASA_API}/apod/save/today`;
         }
 
         const res = await fetch(url, {
