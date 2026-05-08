@@ -208,26 +208,61 @@ backend/src/main/resources/application-local.properties
 ```
 
 Example:
-```properties
-# NASA APOD API key
-# Generate from: https://api.nasa.gov/
-nasa.api.key=YOUR_NASA_API_KEY
+## Local Development Configuration
 
-# JWT secret key used for token signing
-# Replace with a strong random secret string
-nasa.jwt.secret=YOUR_SECURE_JWT_SECRET
+Create:
 
-# Local MySQL database configuration
-# Replace database name if different
-spring.datasource.url=jdbc:mysql://localhost:3306/nasa-directory
-
-# Local MySQL username
-spring.datasource.username=YOUR_DB_USERNAME
-
-# Local MySQL password
-spring.datasource.password=YOUR_DB_PASSWORD
+```text
+backend/src/main/resources/application-local.properties
 ```
 
+Example configuration:
+
+```properties
+# NASA API Configuration
+# Generate your API key from:
+# https://api.nasa.gov/
+
+nasa.api.key=YOUR_NASA_API_KEY
+
+
+# JWT Secret Key
+# Replace with a strong secret key for token signing
+
+nasa.jwt.secret=YOUR_SECURE_JWT_SECRET
+
+
+# Database Configuration
+# Replace according to your local database setup
+# You may use MySQL, PostgreSQL, or any supported relational database
+
+spring.datasource.url=jdbc:mysql://localhost:3306/nasa-directory
+
+spring.datasource.username=YOUR_DATABASE_USERNAME
+
+spring.datasource.password=YOUR_DATABASE_PASSWORD
+
+
+# JPA Configuration
+
+spring.jpa.hibernate.ddl-auto=update
+
+
+# Server Port
+
+server.port=5000
+```
+
+### Notes
+
+- Replace all placeholder values with your actual local configuration.
+- The application is database-vendor flexible and can be configured with:
+  - MySQL
+  - PostgreSQL
+  - MariaDB
+  - Other JDBC-compatible relational databases
+- Ensure your database server is running before starting the backend.
+- Keep local secrets and credentials outside Git tracking.
 # 🐳 Docker Support
 
 Backend is fully Dockerized.
