@@ -24,7 +24,7 @@ Users can:
 # 🌐 Live Demo
 
 ## Frontend
-https://nasa-apod-vault.pages.dev/
+https://nasa-apod-vault.pages.dev
 
 ## Backend Health Endpoint
 https://nasa-apod-vault.onrender.com/api/nasa/health
@@ -84,7 +84,7 @@ https://nasa-apod-vault.onrender.com/api/nasa/health
                           │
                           ▼
                 ┌─────────────────────┐
-                │  Frontend (Netlify) │
+                │  Frontend (CloudFlare) │
                 │ HTML / CSS / JS UI  │
                 └─────────┬───────────┘
                           │ REST API Calls
@@ -317,7 +317,7 @@ docker run -p 5000:5000 nasa-backend
 
 | Layer | Platform |
 |---|---|
-| Frontend Hosting | Netlify |
+| Frontend Hosting | CloudFlare |
 | Backend Hosting | Render |
 | Database Hosting | Neon PostgreSQL |
 | Containerization | Docker |
