@@ -17,11 +17,11 @@ const NASA_API = `${API_BASE}/api/nasa`;
         path.includes("index.html");
 
     if (!token && !isLogin) {
-        window.location.href = "/";
+        window.location.href = "./index.html";
     }
 
     if (token && isLogin) {
-        window.location.href = "Homepage.html";
+        window.location.href = "./homepage.html";
     }
 
 })();
@@ -488,5 +488,19 @@ function logout() {
 
     localStorage.clear();
 
-    window.location.href = "/";
+    window.location.href = "./index.html";
 }
+
+// ================= DATE LIMITS =================
+document.addEventListener("DOMContentLoaded", () => {
+
+    const input = document.getElementById("apodDate");
+
+    if (input) {
+
+        input.min = "1995-06-16";
+
+        input.max =
+            new Date().toISOString().split("T")[0];
+    }
+});
